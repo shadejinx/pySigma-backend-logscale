@@ -67,10 +67,10 @@ class logscaleBackend(TextQueryBackend):
     # Regular expression query as format string with placeholders {field}, {regex}, {flag_x} where x
     # is one of the flags shortcuts supported by Sigma (currently i, m and s) and refers to the
     # token stored in the class variable re_flags.
-    re_expression : ClassVar[str] = "{field}=/{regex}/{flag_x}"
+    re_expression : ClassVar[str] = "{field} = /{regex}/{flag_i}"
     re_escape_char : ClassVar[str] = "\\"               # Character used for escaping in regular expressions
     re_escape : ClassVar[Tuple[str]] = ()               # List of strings that are escaped
-    re_escape_escape_char : bool = True                 # If True, the escape character is also escaped
+    re_escape_escape_char : bool = False                 # If True, the escape character is also escaped
     re_flag_prefix : bool = True                        # If True, the flags are prepended as (?x) group at the beginning of the regular expression, e.g. (?i). If this is not supported by the target, it should be set to False.
     # Mapping from SigmaRegularExpressionFlag values to static string templates that are used in
     # flag_x placeholders in re_expression template.
@@ -128,7 +128,7 @@ class logscaleBackend(TextQueryBackend):
     # Value not bound to a field
     unbound_value_str_expression : ClassVar[str] = '"{value}"'   # Expression for string value not bound to a field as format string with placeholder {value}
     unbound_value_num_expression : ClassVar[str] = '{value}'     # Expression for number value not bound to a field as format string with placeholder {value}
-    unbound_value_re_expression : ClassVar[str] = '/{value}/{flag_x}'   # Expression for regular expression not bound to a field as format string with placeholder {value} and {flag_x} as described for re_expression
+    unbound_value_re_expression : ClassVar[str] = '/{value}/{flag_i}'   # Expression for regular expression not bound to a field as format string with placeholder {value} and {flag_x} as described for re_expression
 
     # Query finalization: appending and concatenating deferred query part
     deferred_start : ClassVar[str] = "\n| "               # String used as separator between main query and deferred parts
