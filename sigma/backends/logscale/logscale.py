@@ -60,7 +60,7 @@ class logscaleBackend(TextQueryBackend):
     # String matching operators. if none is appropriate eq_token is used.
     startswith_expression : ClassVar[str] = "{field} = {value}*"
     endswith_expression   : ClassVar[str] = "{field} = *{value}"
-    contains_expression   : ClassVar[str] = "{field} *{value}*"
+    contains_expression   : ClassVar[str] = "{field} = *{value}*"
     wildcard_match_expression : ClassVar[str] = None ### "{field} match {value}"      # Special expression if wildcards can't be matched with the eq_token operator
 
     # Regular expressions
