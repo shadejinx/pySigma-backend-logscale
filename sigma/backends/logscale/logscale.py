@@ -24,7 +24,7 @@ class logscaleBackend(TextQueryBackend):
     requires_pipeline : bool = False            # TODO: does the backend requires that a processing pipeline is provided? This information can be used by user interface programs like Sigma CLI to warn users about inappropriate usage of the backend.
 
     precedence : ClassVar[Tuple[ConditionItem, ConditionItem, ConditionItem]] = (ConditionNOT, ConditionAND, ConditionOR)
-    group_expression : ClassVar[str] = "({expr})"   # Expression for precedence override grouping as format string with {expr} placeholder
+    group_expression : ClassVar[str] = "( {expr} )"   # Expression for precedence override grouping as format string with {expr} placeholder
 
     # Generated query tokens
     token_separator : str = " "     # separator inserted between all boolean operators
@@ -84,12 +84,12 @@ class logscaleBackend(TextQueryBackend):
 
     # Case sensitive string matching expression. String is quoted/escaped like a normal string.
     # Placeholders {field} and {value} are replaced with field name and quoted/escaped string.
-    case_sensitive_match_expression : ClassVar[str] = None ### "{field} casematch {value}"
+    case_sensitive_match_expression : ClassVar[str] = 'wildcard(field={field}, pattern={value}, ignoreCase=true)'
     # Case sensitive string matching operators similar to standard string matching. If not provided,
     # case_sensitive_match_expression is used.
-    case_sensitive_startswith_expression : ClassVar[str] = "{field} = {value}*"
-    case_sensitive_endswith_expression   : ClassVar[str] = "{field} = *{value}"
-    case_sensitive_contains_expression   : ClassVar[str] = "{field} = *{value}*"
+    case_sensitive_startswith_expression : ClassVar[str] = 'wildcard(field={field}, pattern="{value}*", ignoreCase=true)'
+    case_sensitive_endswith_expression   : ClassVar[str] = 'wildcard(field={field}, pattern="*{value}", ignoreCase=true)'
+    case_sensitive_contains_expression   : ClassVar[str] = 'wildcard(field={field}, pattern="*{value}*, ignoreCase=true)'
 
     # CIDR expressions: define CIDR matching if backend has native support. Else pySigma expands
     # CIDR values into string wildcard matches.
@@ -119,8 +119,8 @@ class logscaleBackend(TextQueryBackend):
     # Field value in list, e.g. "field in (value list)" or "field containsall (value list)"
     convert_or_as_in : ClassVar[bool] = True                     # Convert OR as in-expression
     convert_and_as_in : ClassVar[bool] = False                    # Convert AND as in-expression
-    in_expressions_allow_wildcards : ClassVar[bool] = False       # Values in list can contain wildcards. If set to False (default) only plain values are converted into in-expressions.
-    field_in_list_expression : ClassVar[str] = "in(field={field}, value=[{list}])"  # Expression for field in list of values as format string with placeholders {field}, {op} and {list}
+    in_expressions_allow_wildcards : ClassVar[bool] = True       # Values in list can contain wildcards. If set to False (default) only plain values are converted into in-expressions.
+    field_in_list_expression : ClassVar[str] = "in(field={field}, values=[{list}], ignoreCase=true)"  # Expression for field in list of values as format string with placeholders {field}, {op} and {list}
     or_in_operator : ClassVar[str] = "in"               # Operator used to convert OR into in-expressions. Must be set if convert_or_as_in is set
     and_in_operator : ClassVar[str] = "contains-all"    # Operator used to convert AND into in-expressions. Must be set if convert_and_as_in is set
     list_separator : ClassVar[str] = ", "               # List element separator
