@@ -29,7 +29,7 @@ class logscaleBackend(TextQueryBackend):
     # Generated query tokens
     token_separator : str = " "     # separator inserted between all boolean operators
     or_token : ClassVar[str] = "OR"
-    and_token : ClassVar[str] = " "
+    and_token : ClassVar[str] = "\n|"
     not_token : ClassVar[str] = "NOT"
     eq_token : ClassVar[str] = "="  # Token inserted between field and value (without separator)
 

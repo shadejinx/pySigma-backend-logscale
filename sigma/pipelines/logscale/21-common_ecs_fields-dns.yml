@@ -1,0 +1,12 @@
+name: Common ECS Fields - DNS
+priority: 21
+transformations:
+- id: field_mapping
+  type: field_name_mapping
+  mapping:
+    query:
+    - dns.request.name
+    answer:
+    - dns.answers
+    record_type:
+    - dns.answers.type

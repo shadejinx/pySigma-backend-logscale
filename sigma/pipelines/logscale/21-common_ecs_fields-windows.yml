@@ -1,0 +1,26 @@
+name: Common ECS Fields - Windows
+priority: 21
+transformations:
+- id: field_mapping
+  type: field_name_mapping
+  mapping:
+    CommandLine: process.command_line
+    Image: process.executable
+    ParentImage: parent.process.executable
+    ParentCommandLine: parent.process.command_line
+    OriginalFileName: file.path
+- id: query_header
+  type: query_expression_placeholders
+  expression: "$reveald/windows:filter() | $reveald/windows:parse()"
+postprocessing:
+  - type: template
+    template: |-
+      $reveald/windows:filter() | $reveald/windows:parse()
+      | {{query}}
+
+      // ### METADATA ###
+      | reveald.usecase.id: {{rule.id}}
+      | reveald.usecase.name: {{rule.title}}
+      | reveald.usecase.level: {{rule.level}}
+#finalizers:
+#  - type: concat

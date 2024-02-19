@@ -1,0 +1,16 @@
+name: Common ECS Fields - DNS
+priority: 21
+transformations:
+- id: field_mapping
+  type: field_name_mapping
+  mapping:
+    dst_port:
+    - destination.port
+    dst_ip:
+    - destination.ip
+    src_port:
+    - source.port
+    src_ip:
+    - source.ip
+    action:
+    - event.action
